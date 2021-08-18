@@ -11,9 +11,9 @@ app.listen(3000);
 
 app.get('/', (req, res) => {
         const blogs = [
-        {title: 'The title1', snippet:'The snippet1'},
-        {title: 'The title2', snippet:'The snippet2'},
-        {title: 'The title3', snippet:'The snippet3'},
+        {title: 'Hello world', snippet:'Hi world'},
+        {title: 'Hello boy', snippet:'Hi boys'},
+        {title: 'Hello girl', snippet:'Hi girls'},
         ];
     res.render('index', {title: 'Home', blogs});
 });
