@@ -9,6 +9,14 @@ app.set('view engine', 'ejs');
 // requests listener
 app.listen(3000);
 
+app.use((req, res, next) => {
+    console.log('New request:');
+    console.log('host:', req.hostname);
+    console.log('path:', req.path);
+    console.log('method:', req.method);
+    next();
+});
+
 app.get('/', (req, res) => {
         const blogs = [
         {title: 'Hello world', snippet:'Hi world'},
@@ -16,6 +24,11 @@ app.get('/', (req, res) => {
         {title: 'Hello girl', snippet:'Hi girls'},
         ];
     res.render('index', {title: 'Home', blogs});
+});
+
+app.use((req, res, next) => {
+    console.log('next middleware');
+    next();
 });
 
 app.get('/about', (req, res) => {
