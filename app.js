@@ -1,39 +1,56 @@
 const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog');
 
 // express app
 const app = express();
 
+// connect to mongodb
+const dbURI = 'mongodb+srv://walidos:test1234@nodejsapp.baio5.mongodb.net/nodejsapp?retryWrites=true&w=majority';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((result) => app.listen(3000))
+    .catch((err) => console.log(err));
+
 // register view engine
 app.set('view engine', 'ejs');
 
-// requests listener
-app.listen(3000);
+// middleware & static files
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
 
-app.use((req, res, next) => {
-    console.log('New request:');
-    console.log('host:', req.hostname);
-    console.log('path:', req.path);
-    console.log('method:', req.method);
-    next();
-});
-
+// routes
 app.get('/', (req, res) => {
-        const blogs = [
-        {title: 'Hello world', snippet:'Hi world'},
-        {title: 'Hello boy', snippet:'Hi boys'},
-        {title: 'Hello girl', snippet:'Hi girls'},
-        ];
-    res.render('index', {title: 'Home', blogs});
-});
-
-app.use((req, res, next) => {
-    console.log('next middleware');
-    next();
+    res.redirect('/blogs');
 });
 
 app.get('/about', (req, res) => {
     res.render('about', {title: 'About'});
 });
+
+// blog routes
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+    .then((result) => {
+        res.render('index', {title: 'All Blogs', blogs: result})
+    })
+    .catch((err) =>{
+        console.log(err);
+    })
+});
+
+app.post('/blogs', (req, res) => {
+ const blog = new Blog(req.body);
+
+ blog.save()
+    .then((result) => {
+        res.redirect('/blogs');
+    })
+    .catch((err) =>{
+        console.log(err);
+    })
+})
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', {title: 'Create a new blog'});
