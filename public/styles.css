@@ -73,6 +73,10 @@
         .delete:hover{
             cursor: pointer;
             box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+            border: 2px solid;
+            background-color: white;
+            color: black;
+            cursor: pointer;
         }
         .create-blog form{
             max-width: 400px;
@@ -94,10 +98,11 @@
         }
         .create-blog button{
             margin-top: 20px;
-            background: crimson;
+            background-color: #555555;
+            border-radius: 8px;
             color: white;
             padding: 6px;
             border: 0;
-            font-size: 1.2em;
+            font-size: 20px;
             cursor: pointer;
         }
